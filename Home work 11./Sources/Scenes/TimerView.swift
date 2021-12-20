@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  TimerView.swift
 //  Home work 11.
 //
 //  Created by Ренат Сафин on 20.12.2021.
@@ -23,9 +23,20 @@ class TimerView: UIViewController {
         let configurationImage = UIImage.SymbolConfiguration(pointSize: 60)
         let imageButton = UIImage(systemName: "play", withConfiguration: configurationImage)
         button.setImage(imageButton, for: .normal)
+        
+        button.addTarget(self, action: #selector(buttonAction), for: .touchUpInside)
         return button
     }()
 
+    private var timer = Timer()
+    private var durationTimer = 10 {
+        didSet {
+            labelTimer.text = durationTimer < 10 ? "00:0\(durationTimer)" : "00:\(durationTimer)"
+        }
+    }
+    private var isStarted = false
+    private var isWorkTime = true
+    
     //MARK: - Lifecycle
     
     override func viewDidLoad() {
@@ -58,5 +69,23 @@ class TimerView: UIViewController {
         
     }
 
+    //MARK: - Actions
+    
+    @objc private func timerAction() {
+        durationTimer -= 1
+    }
+    
+    @objc private func buttonAction() {
+        isStarted = !isStarted
+        
+        if isStarted {
+            timer = Timer.scheduledTimer(timeInterval: 1,
+                                         target: self, selector: #selector(timerAction),
+                                         userInfo: nil, repeats: true)
+        } else {
+            timer.invalidate()
+        }
+    }
+    
 }
 
