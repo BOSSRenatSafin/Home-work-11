@@ -10,32 +10,47 @@ import UIKit
 class TimerView: UIViewController {
     
     private lazy var labelTimer: UILabel = {
-       var labelTimer = UILabel()
-        labelTimer.text = "00:10"
-        labelTimer.textColor = .red
-        labelTimer.font = .systemFont(ofSize: 80)
+        var labelTimer = UILabel()
+        labelTimer.text = String(format: "%02i:%02i", Metric.minutes, Metric.seconds)
+        labelTimer.textColor = isWorkTime ? Color.workState : Color.relaxState
+        labelTimer.font = .systemFont(ofSize: Metric.labelSize)
         labelTimer.sizeToFit()
         return labelTimer
     }()
     
     private lazy var button: UIButton = {
         var button = UIButton()
-        let configurationImage = UIImage.SymbolConfiguration(pointSize: 60)
-        let imageButton = UIImage(systemName: "play", withConfiguration: configurationImage)
-        button.setImage(imageButton, for: .normal)
+        let currentColor = isWorkTime ? Color.workState : Color.relaxState
+        let configurationImage = UIImage.SymbolConfiguration(pointSize: Metric.buttonSize)
+        button.setPreferredSymbolConfiguration(configurationImage, forImageIn: .normal)
+        button.setImage(Icon.start?.withTintColor(currentColor, renderingMode: .alwaysOriginal), for: .normal)
+        button.setImage(Icon.pause?.withTintColor(currentColor, renderingMode: .alwaysOriginal), for: .selected)
         
         button.addTarget(self, action: #selector(buttonAction), for: .touchUpInside)
+        
         return button
     }()
-
+    
     private var timer = Timer()
-    private var durationTimer = 10 {
+    private var durationTimer = Metric.workTimeValue {
         didSet {
-            labelTimer.text = durationTimer < 10 ? "00:0\(durationTimer)" : "00:\(durationTimer)"
+            labelTimer.text = durationTimer < Metric.workTimeValue ? "00:0\(durationTimer)" : "00:\(durationTimer)"
         }
     }
-    private var isStarted = false
-    private var isWorkTime = true
+    private var isStarted = false {
+        didSet {
+            button.isSelected = isStarted
+        }
+    }
+    private var isWorkTime = true {
+        didSet {
+            durationTimer = isWorkTime ? Metric.workTimeValue : Metric.relaxTimeValue
+            labelTimer.textColor = isWorkTime ? Color.workState : Color.relaxState
+            let currentColor = isWorkTime ? Color.workState : Color.relaxState
+            button.setImage(Icon.start?.withTintColor(currentColor, renderingMode: .alwaysOriginal), for: .normal)
+            button.setImage(Icon.pause?.withTintColor(currentColor, renderingMode: .alwaysOriginal), for: .selected)
+        }
+    }
     
     //MARK: - Lifecycle
     
@@ -46,7 +61,7 @@ class TimerView: UIViewController {
         setupLayout()
         setupView()
     }
-
+    
     //MARK: - Settings
     
     private func setupHierarchy() {
@@ -66,9 +81,8 @@ class TimerView: UIViewController {
     
     private func setupView() {
         
-        
     }
-
+    
     //MARK: - Actions
     
     @objc private func timerAction() {
@@ -92,6 +106,28 @@ class TimerView: UIViewController {
             timer.invalidate()
         }
     }
-    
 }
+
+extension TimerView {
+    enum Icon {
+        static let start = UIImage(systemName: "play")
+        static let pause = UIImage(systemName: "pause")
+    }
+    
+    enum Metric {
+        static let labelSize: CGFloat = 80
+        static let buttonSize: CGFloat = 60
+        static let workTimeValue = 10
+        static let relaxTimeValue = 5
+        static let minutes = workTimeValue / 60 % 60
+        static let seconds = workTimeValue % 60
+    }
+    
+    enum Color {
+        static let workState = UIColor.systemRed
+        static let relaxState = UIColor.systemGreen
+    }
+}
+
+
 
