@@ -52,6 +52,8 @@ class TimerView: UIViewController {
         }
     }
     
+    private lazy var shapeLayer = CAShapeLayer()
+    private lazy var trackLayer = CAShapeLayer()
     //MARK: - Lifecycle
     
     override func viewDidLoad() {
@@ -62,11 +64,19 @@ class TimerView: UIViewController {
         setupView()
     }
     
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        createCircleAnimation()
+        setCircleColor()
+    }
+    
     //MARK: - Settings
     
     private func setupHierarchy() {
         view.addSubview(labelTimer)
         view.addSubview(button)
+        view.layer.addSublayer(trackLayer)
+        view.layer.addSublayer(shapeLayer)
     }
     
     private func setupLayout() {
@@ -81,6 +91,47 @@ class TimerView: UIViewController {
     
     private func setupView() {
         
+    }
+    
+    private func createCircleAnimation() {
+        let center = view.center
+        let radius = min(view.frame.width, view.frame.height) / 2.2
+        let startAngle = 3 / 2 * CGFloat.pi
+        let endAngle = startAngle - (2 * CGFloat.pi)
+        let circlePath = UIBezierPath(arcCenter: center,
+                                      radius: radius,
+                                      startAngle: startAngle,
+                                      endAngle: endAngle,
+                                      clockwise: false)
+        trackLayer.path = circlePath.cgPath
+        trackLayer.strokeColor = Color.workState.cgColor
+        trackLayer.lineWidth = Metric.widthCircle
+        trackLayer.fillColor = UIColor.clear.cgColor
+        trackLayer.lineCap = CAShapeLayerLineCap.round
+        
+        shapeLayer.path = circlePath.cgPath
+        shapeLayer.strokeColor = Color.workState.cgColor
+        shapeLayer.lineWidth = Metric.widthCircle
+        shapeLayer.fillColor = UIColor.clear.cgColor
+        shapeLayer.lineCap = CAShapeLayerLineCap.round
+        shapeLayer.strokeEnd = 1
+    }
+    
+    private func startAnimationCircle() {
+        let basicAnimation = CABasicAnimation(keyPath: "strokeEnd")
+        basicAnimation.speed = 1.0
+        basicAnimation.toValue = 0
+        basicAnimation.duration = CFTimeInterval(durationTimer)
+        basicAnimation.fillMode = CAMediaTimingFillMode.forwards
+        basicAnimation.isRemovedOnCompletion = true
+        shapeLayer.add(basicAnimation, forKey: "basicAniation")
+    }
+    
+    func setCircleColor() {
+        let currentColorTrack = isWorkTime ? Color.workTrackLayer : Color.relaxTrackLayer
+        let currentColorShape = isWorkTime ? Color.workShapeLayer : Color.relaxShapeLayer
+        trackLayer.strokeColor = currentColorTrack.cgColor
+        shapeLayer.strokeColor = currentColorShape.cgColor
     }
     
     //MARK: - Actions
@@ -102,6 +153,7 @@ class TimerView: UIViewController {
             timer = Timer.scheduledTimer(timeInterval: 1,
                                          target: self, selector: #selector(timerAction),
                                          userInfo: nil, repeats: true)
+            startAnimationCircle()
         } else {
             timer.invalidate()
         }
@@ -121,11 +173,16 @@ extension TimerView {
         static let relaxTimeValue = 5
         static let minutes = workTimeValue / 60 % 60
         static let seconds = workTimeValue % 60
+        static let widthCircle: CGFloat = 10
     }
     
     enum Color {
         static let workState = UIColor.systemRed
         static let relaxState = UIColor.systemGreen
+        static let relaxTrackLayer = UIColor.systemGreen.withAlphaComponent(0.2)
+        static let relaxShapeLayer = UIColor.systemGreen.withAlphaComponent(0.8)
+        static let workTrackLayer = UIColor.systemRed.withAlphaComponent(0.2)
+        static let workShapeLayer = UIColor.systemRed.withAlphaComponent(0.8)
     }
 }
 
