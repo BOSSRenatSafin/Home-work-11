@@ -17,6 +17,14 @@ class TimerView: UIViewController {
         labelTimer.sizeToFit()
         return labelTimer
     }()
+    
+    private lazy var button: UIButton = {
+        var button = UIButton()
+        let configurationImage = UIImage.SymbolConfiguration(pointSize: 60)
+        let imageButton = UIImage(systemName: "play", withConfiguration: configurationImage)
+        button.setImage(imageButton, for: .normal)
+        return button
+    }()
 
     //MARK: - Lifecycle
     
@@ -32,7 +40,7 @@ class TimerView: UIViewController {
     
     private func setupHierarchy() {
         view.addSubview(labelTimer)
-        
+        view.addSubview(button)
     }
     
     private func setupLayout() {
@@ -40,6 +48,9 @@ class TimerView: UIViewController {
         labelTimer.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         labelTimer.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: -30).isActive = true
         
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        button.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: 80).isActive = true
     }
     
     private func setupView() {
