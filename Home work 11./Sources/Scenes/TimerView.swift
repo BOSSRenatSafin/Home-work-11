@@ -52,6 +52,8 @@ class TimerView: UIViewController {
         }
     }
     
+    var state: State = .start
+    
     private lazy var shapeLayer = CAShapeLayer()
     private lazy var trackLayer = CAShapeLayer()
     //MARK: - Lifecycle
@@ -134,10 +136,26 @@ class TimerView: UIViewController {
         shapeLayer.strokeColor = currentColorShape.cgColor
     }
     
+    private func pauseAnimationCircle() {
+        let pauseTimer = shapeLayer.convertTime(CACurrentMediaTime(), from: nil)
+        shapeLayer.speed = 0
+        shapeLayer.timeOffset = pauseTimer
+    }
+    
+    private func resumeAnimationCircle() {
+        let pausedTime = shapeLayer.timeOffset
+        shapeLayer.speed = 1.0
+        shapeLayer.timeOffset = 0.0
+        shapeLayer.beginTime = 0.0
+        let timeStart = shapeLayer.convertTime(CACurrentMediaTime(), from: nil) - pausedTime
+        shapeLayer.beginTime = timeStart
+    }
+    
     //MARK: - Actions
     
     @objc private func timerAction() {
         guard durationTimer > 0 else {
+            state = .start
             isStarted = !isStarted
             isWorkTime = !isWorkTime
             timer.invalidate()
@@ -147,15 +165,27 @@ class TimerView: UIViewController {
     }
     
     @objc private func buttonAction() {
-        isStarted = !isStarted
-        
-        if isStarted {
+        switch state {
+        case .start:
             timer = Timer.scheduledTimer(timeInterval: 1,
                                          target: self, selector: #selector(timerAction),
                                          userInfo: nil, repeats: true)
             startAnimationCircle()
-        } else {
+        case .pause:
             timer.invalidate()
+            pauseAnimationCircle()
+        case .resume:
+            timer = Timer.scheduledTimer(timeInterval: 1,
+                                         target: self, selector: #selector(timerAction),
+                                         userInfo: nil, repeats: true)
+            resumeAnimationCircle()
+        }
+        
+        isStarted = !isStarted
+        if isStarted {
+            state = .pause
+        } else {
+            state = .resume
         }
     }
 }
@@ -183,6 +213,10 @@ extension TimerView {
         static let relaxShapeLayer = UIColor.systemGreen.withAlphaComponent(0.8)
         static let workTrackLayer = UIColor.systemRed.withAlphaComponent(0.2)
         static let workShapeLayer = UIColor.systemRed.withAlphaComponent(0.8)
+    }
+    
+    enum State {
+        case start, pause, resume
     }
 }
 
