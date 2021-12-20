@@ -9,7 +9,7 @@
 /* Begin PBXBuildFile section */
 		1566F3522770F30200B2B99B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1566F3512770F30200B2B99B /* AppDelegate.swift */; };
 		1566F3542770F30200B2B99B /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1566F3532770F30200B2B99B /* SceneDelegate.swift */; };
-		1566F3562770F30200B2B99B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1566F3552770F30200B2B99B /* ViewController.swift */; };
+		1566F3562770F30200B2B99B /* TimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1566F3552770F30200B2B99B /* TimerView.swift */; };
 		1566F3592770F30200B2B99B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1566F3572770F30200B2B99B /* Main.storyboard */; };
 		1566F35B2770F30300B2B99B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1566F35A2770F30300B2B99B /* Assets.xcassets */; };
 		1566F35E2770F30300B2B99B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1566F35C2770F30300B2B99B /* LaunchScreen.storyboard */; };
@@ -19,7 +19,7 @@
 		1566F34E2770F30200B2B99B /* Home work 11..app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Home work 11..app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		1566F3512770F30200B2B99B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1566F3532770F30200B2B99B /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		1566F3552770F30200B2B99B /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		1566F3552770F30200B2B99B /* TimerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerView.swift; sourceTree = "<group>"; };
 		1566F3582770F30200B2B99B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		1566F35A2770F30300B2B99B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1566F35D2770F30300B2B99B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -56,15 +56,63 @@
 		1566F3502770F30200B2B99B /* Home work 11. */ = {
 			isa = PBXGroup;
 			children = (
-				1566F3512770F30200B2B99B /* AppDelegate.swift */,
-				1566F3532770F30200B2B99B /* SceneDelegate.swift */,
-				1566F3552770F30200B2B99B /* ViewController.swift */,
-				1566F3572770F30200B2B99B /* Main.storyboard */,
+				1566F3682770FA1000B2B99B /* Sources */,
+				1566F3652770F93700B2B99B /* Resources */,
 				1566F35A2770F30300B2B99B /* Assets.xcassets */,
-				1566F35C2770F30300B2B99B /* LaunchScreen.storyboard */,
-				1566F35F2770F30300B2B99B /* Info.plist */,
 			);
 			path = "Home work 11.";
+			sourceTree = "<group>";
+		};
+		1566F3652770F93700B2B99B /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				1566F3672770F9E900B2B99B /* Storyboards */,
+				1566F3662770F94700B2B99B /* Config */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		1566F3662770F94700B2B99B /* Config */ = {
+			isa = PBXGroup;
+			children = (
+				1566F35F2770F30300B2B99B /* Info.plist */,
+			);
+			path = Config;
+			sourceTree = "<group>";
+		};
+		1566F3672770F9E900B2B99B /* Storyboards */ = {
+			isa = PBXGroup;
+			children = (
+				1566F3572770F30200B2B99B /* Main.storyboard */,
+				1566F35C2770F30300B2B99B /* LaunchScreen.storyboard */,
+			);
+			path = Storyboards;
+			sourceTree = "<group>";
+		};
+		1566F3682770FA1000B2B99B /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				1566F36A2770FA3200B2B99B /* Scenes */,
+				1566F3692770FA1C00B2B99B /* App */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		1566F3692770FA1C00B2B99B /* App */ = {
+			isa = PBXGroup;
+			children = (
+				1566F3532770F30200B2B99B /* SceneDelegate.swift */,
+				1566F3512770F30200B2B99B /* AppDelegate.swift */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		1566F36A2770FA3200B2B99B /* Scenes */ = {
+			isa = PBXGroup;
+			children = (
+				1566F3552770F30200B2B99B /* TimerView.swift */,
+			);
+			path = Scenes;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -138,7 +186,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1566F3562770F30200B2B99B /* ViewController.swift in Sources */,
+				1566F3562770F30200B2B99B /* TimerView.swift in Sources */,
 				1566F3522770F30200B2B99B /* AppDelegate.swift in Sources */,
 				1566F3542770F30200B2B99B /* SceneDelegate.swift in Sources */,
 			);
@@ -291,7 +339,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 4MP59MZ872;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "Home work 11./Info.plist";
+				INFOPLIST_FILE = "Home work 11./Resources/Config/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
@@ -319,7 +367,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 4MP59MZ872;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "Home work 11./Info.plist";
+				INFOPLIST_FILE = "Home work 11./Resources/Config/Info.plist";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UIMainStoryboardFile = Main;
