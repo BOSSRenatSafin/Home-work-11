@@ -72,6 +72,12 @@ class TimerView: UIViewController {
     //MARK: - Actions
     
     @objc private func timerAction() {
+        guard durationTimer > 0 else {
+            isStarted = !isStarted
+            isWorkTime = !isWorkTime
+            timer.invalidate()
+            return
+        }
         durationTimer -= 1
     }
     
